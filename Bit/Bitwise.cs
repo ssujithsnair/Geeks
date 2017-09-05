@@ -52,6 +52,8 @@ namespace Geeks.Bit
 			//return (x < 0)? (y >= 0): (y < 0);
 		}
 
+        //http://www.geeksforgeeks.org/count-total-set-bits-in-all-numbers-from-1-to-n/
+        //Given a positive integer n, count the total number of set bits in binary representation of all numbers from 1 to n.
 		public static int countSetBits(int n)
 		{
 			int x, sum =0;
@@ -71,5 +73,13 @@ namespace Geeks.Bit
 			return sum;
 		}
 
+        public static int SwapBits(int x, int p1, int p2, int n) 
+        {
+            // xor contains xor of two sets
+            int xor = ((x >> p1) ^ (x >> p2)) & ((1 << n) - 1);
+
+            //To swap two sets, we need to again XOR the xor with original sets
+            return x ^ ((xor << p1) | (xor << p2));
+        }
 	}
 }
