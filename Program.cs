@@ -23,6 +23,10 @@ namespace Geeks
             val = Bitwise.Smallest(2, 5, 1);
             Bitwise.changeToZero();
             val = Bitwise.NextHigherNumberWithSameBits(156);
+            uint valu = Bitwise.reverseBits(1);
+            Bitwise.BinaryRep(5);
+            bool valb = Bitwise.IsPaliandrome(9);
+            valb = Bitwise.FindSubSequence("nematode knowledge", "nano");
         }
 	}
 }

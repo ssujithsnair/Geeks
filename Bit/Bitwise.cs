@@ -193,17 +193,18 @@ n bits become 0.
             return (n & (d - 1));
         }
 
-        public static int LeftRotate(int x, int n) {
+        public static int LeftRotate(int x, int n)
+        {
             /* In n<<d, last d bits are 0. To put first 3 bits of n at 
             last, do bitwise or of n<<d with n >>(INT_BITS - d) */
             return ((x << n) | (x >> (32 - n)));
             //return ((x >> n) | (x << (32 - n))); Right rotate
         }
 
-        public static void get2NonRepeatingNos(int []arr)
+        public static void get2NonRepeatingNos(int[] arr)
         {
             int n = arr.Length;
-            int xor =0;
+            int xor = 0;
             int x = 0, y = 0;
             foreach (var elem in arr)
             {
@@ -222,7 +223,7 @@ n bits become 0.
         {
             // Best solution: 
             //if (a > INT_MAX - b) return true;
-            
+
             // Another one:
             // There can be overflow only if signs of two numbers are same, and sign of sum is opposite to the
             // signs of numbers.
@@ -231,6 +232,142 @@ n bits become 0.
                 return true;
             if (a < 0 && b < 0 && sum > 0)
                 return true;
+            return false;
+        }
+        public static uint reverseBits(uint num)
+        {
+            int reverse_num = 0;
+            for (int i = 0; i < 32; i++)
+            {
+                if ((num & (1 << i)) != 0)
+                {
+                    reverse_num |= 1 << (31 - i);
+                }
+            }
+            return (uint)reverse_num;
+        }
+        public static int NextPowerOf2(int n)
+        {
+            // N is not zero and there is only one bit in n (meaning n is a power of 2)
+            if (n != 0 && ((n & (n - 1)) == 0))
+            {
+                return n;
+            }
+            int num = 1;
+            while (num < n)
+            {
+                num <<= 1;
+            }
+            return num;
+        }
+
+        public static bool isMultipleof3(int n)
+        {
+            /* Make no positive if +n is multiple of 3
+       then is -n. We are doing this to avoid
+       stack overflow in recursion*/
+            if (n < 0)
+                n = -n;
+            if (n == 0)
+                return true;
+            if (n == 1)
+                return false;
+            int oddCount = 0, evenCount = 0;
+            while (n > 0)
+            {
+                if ((n & 1) != 0)
+                    oddCount++;
+                n >>= 1;
+                if ((n & 1) != 0)
+                    evenCount++;
+                n >>= 1;
+            }
+            return isMultipleof3(oddCount - evenCount);
+        }
+
+        public static bool CheckParity(int n)
+        {
+            // returns true if n has odd parity and false if even parity
+            bool parity = false;
+            while (n > 0)
+            {
+                parity = !parity;
+                n = n & (n - 1);
+            }
+            return parity;
+        }
+        public static int multiplyBySeven(int n)
+        {
+            // 7n = 8n-n (n <<3 is 8n)
+            return ((n << 3) - n);
+        }
+        public static uint getFirstSetBitPos(int n)
+        {
+            // Log2 will give zero based index. n&-n will get the first set bit
+            return (uint)Math.Log(n & -n, 2);
+        }
+        public static void BinaryRep(int n)
+        {
+            if (n > 1)
+                BinaryRep(n / 2);
+            // Finds odd/even
+            Console.Write(n % 2);
+        }
+        public static uint swapBits(uint x)
+        {
+            // Get all even bits of x
+            uint even_bits = x & 0xAAAAAAAA;
+
+            // Get all odd bits of x
+            uint odd_bits = x & 0x55555555;
+
+            even_bits >>= 1;  // Right shift even bits
+            odd_bits <<= 1;   // Left shift odd bits
+
+            return (even_bits | odd_bits); // Combine even and odd bits
+        }
+        public static void Swap(int x, int y)
+        {
+            x = x + y; // x^y
+            y = x - y; // x^y
+            x = x - y; // x^y
+        }
+        public static int swapNibbles(int x)
+        {
+            return ((x & 0x0F) << 4 | (x & 0xF0) >> 4);
+        }
+        public static int turnOffK(int n, int k)
+        {
+            // k must be greater than 0
+            if (k <= 0) return n;
+
+            // Do & of n with a number with all set bits except
+            // the k'th bit
+            return (n & ~(1 << (k - 1)));
+        }
+        private static bool IsKthBitSet(int x, int k)
+        {
+            return ((x & (1 << (k - 1))) != 0);
+        }
+        public static bool IsPaliandrome(int x)
+        {
+            int left = 32, right = 1;
+            while (right < left)
+            {
+                if (IsKthBitSet(x, left) != IsKthBitSet(x, right))
+                    return false;
+                left--; right++;
+            }
+            return true;
+        }
+        public static bool FindSubSequence(string text, string pattern)
+        {
+            var i = 0;
+            foreach (var s in text)
+            {
+                if (s == pattern[i] && ++i == pattern.Length)
+                    return true;
+            }
             return false;
         }
     }
