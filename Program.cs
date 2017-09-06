@@ -20,6 +20,9 @@ namespace Geeks
 			val = Bitwise.countSetBits(17);
 
             val = Bitwise.SwapBits(47, 1, 5, 3);
+            val = Bitwise.Smallest(2, 5, 1);
+            Bitwise.changeToZero();
+            val = Bitwise.NextHigherNumberWithSameBits(156);
         }
 	}
 }
