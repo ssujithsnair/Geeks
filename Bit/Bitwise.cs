@@ -360,15 +360,6 @@ n bits become 0.
             }
             return true;
         }
-        public static bool FindSubSequence(string text, string pattern)
-        {
-            var i = 0;
-            foreach (var s in text)
-            {
-                if (s == pattern[i] && ++i == pattern.Length)
-                    return true;
-            }
-            return false;
-        }
+        
     }
 }
