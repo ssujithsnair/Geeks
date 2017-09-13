@@ -30,7 +30,13 @@ namespace Geeks
         static void DyP()
         {
             var valb = DP.FindSubSequence("nematode knowledge", "nano");
+            var vals = DP.LongestCommonSubsequence("nematode knowledge", "npaarefnror");
             var val = DP.LongestIncreasingSubsequence(new int[] { 10, 22, 9, 33, 21, 50, 41, 60 });
+            val = DP.EditDistance("sunday", "saturday");
+            int [,]Cost = new int[,] { {1, 2, 3}, {4, 8, 2}, {1, 5, 3} };
+            val = DP.CostPath(Cost,2,2);
+            val = DP.CoinChange(new int[] { 2,5,3,6 }, 0);
+            val = DP.EggDrop(2, 36);
         }
         static void Main(string[] args)
         {
