@@ -43,10 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bit\Bitwise.cs" />
+    <Compile Include="Bitwise.cs" />
     <Compile Include="DP.cs" />
+    <Compile Include="LinkedList.cs" />
+    <Compile Include="Misc.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Search.cs" />
+    <Compile Include="Sort.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
