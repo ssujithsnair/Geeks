@@ -8,15 +8,6 @@ namespace Geeks
 {
     static class Sort
     {
-        private static void Swap(ref int x, ref int y)
-        {
-            if (x == y) // MUST since x/y points to address
-                return;
-            x = x + y;
-            y = x - y;
-            x = x - y;
-        }
-
         // Time Complexity: O(n2) as there are two nested loops.
         // Auxiliary Space: O(1)
         public static void SelectionSort(int[] arr)
@@ -31,7 +22,7 @@ namespace Geeks
                     if (arr[j] < arr[min])
                         min = j;
                 }
-                Swap(ref arr[i], ref arr[min]);
+                Misc.Swap(ref arr[i], ref arr[min]);
             }
         }
 
@@ -51,9 +42,9 @@ namespace Geeks
                 bool swapped = false;
                 for (int j = 0; j < n - 1 - i; j++)
                 {
-                    if (arr[j] > arr[j+1])
+                    if (arr[j] > arr[j + 1])
                     {
-                        Swap(ref arr[j], ref arr[j+1]);
+                        Misc.Swap(ref arr[j], ref arr[j + 1]);
                         swapped = true;
                     }
                 }
@@ -90,17 +81,17 @@ namespace Geeks
 
         private static void Merge(int[] arr, int lo, int med, int hi)
         {
-            int n1 = med-lo +1;
+            int n1 = med - lo + 1;
             int n2 = hi - med;
-            int []L = new int[n1];
-            int[]R = new int[n2];
-            int i,j,k;
-            for (i=0; i<n1; i++)
-                L[i] = arr[lo+i];
-            for (j=0; j<n2; j++)
-                R[j] = arr[med+1+j];
+            int[] L = new int[n1];
+            int[] R = new int[n2];
+            int i, j, k;
+            for (i = 0; i < n1; i++)
+                L[i] = arr[lo + i];
+            for (j = 0; j < n2; j++)
+                R[j] = arr[med + 1 + j];
 
-            i=0; j=0; k=lo;
+            i = 0; j = 0; k = lo;
             while (i < n1 && j < n2)
             {
                 if (L[i] <= R[j])
@@ -115,16 +106,16 @@ namespace Geeks
                 }
                 k++;
             }
-            while (i<n1)
+            while (i < n1)
             {
                 arr[k] = L[i];
                 i++; k++;
             }
-            while (j<n2)
+            while (j < n2)
             {
                 arr[k] = R[j];
                 j++; k++;
-            }            
+            }
         }
 
         //Time complexity of Merge Sort is \Theta(nLogn) in all 3 cases (worst, average and best) as merge sort always divides
@@ -139,9 +130,25 @@ namespace Geeks
             MergeSort(arr, lo, med);
             MergeSort(arr, med + 1, hi);
             Merge(arr, lo, med, hi);
-        }        
+        }
 
         public static void InsertionSortSingleLinkedList()
+        {
+            var list = GetLinkedList();
+            list.InsertionSortSingle();
+            Console.WriteLine("LinkedList After sorting");
+            list.printlist();
+        }
+
+        public static void MergeSortSingleLinkedList()
+        {
+            var list = GetLinkedList();
+            list.MergeSort();
+            Console.WriteLine("LinkedList After sorting");
+            list.printlist();
+        }
+
+        private static LinkedList GetLinkedList()
         {
             LinkedList list = new LinkedList();
             list.Push(5);
@@ -151,9 +158,7 @@ namespace Geeks
             list.Push(30);
             Console.WriteLine("Linked List before Sorting..");
             list.printlist();
-            list.InsertionSortSingle();
-            Console.WriteLine("LinkedList After sorting");
-            list.printlist();
+            return list;
         }
 
         /*
@@ -167,7 +172,7 @@ namespace Geeks
         {
             QuickSort(arr, 0, arr.Length - 1);
         }
-        
+
         private static void QuickSort(int[] arr, int lo, int hi)
         {
             if (hi <= lo)
@@ -175,6 +180,46 @@ namespace Geeks
             int pivot = SetPivot(arr, lo, hi);
             QuickSort(arr, lo, pivot - 1);
             QuickSort(arr, pivot + 1, hi);
+        }
+
+        private static void QuickSortIterative(int[] arr, int l, int h)
+        {
+            // create auxiliary stack
+            int[] stack = new int[h - l + 1];
+
+            // initialize top of stack
+            int top = -1;
+
+            // push initial values in the stack
+            stack[++top] = l;
+            stack[++top] = h;
+
+            // keep popping elements until stack is not empty
+            while (top >= 0)
+            {
+                // pop h and l
+                h = stack[top--];
+                l = stack[top--];
+
+                // set pivot element at it's proper position
+                int p = SetPivot(arr, l, h);
+
+                // If there are elements on left side of pivot,
+                // then push left side to stack
+                if (p - 1 > l)
+                {
+                    stack[++top] = l;
+                    stack[++top] = p - 1;
+                }
+
+                // If there are elements on right side of pivot,
+                // then push right side to stack
+                if (p + 1 < h)
+                {
+                    stack[++top] = p + 1;
+                    stack[++top] = h;
+                }
+            }
         }
 
         private static int SetPivot(int[] arr, int lo, int hi)
@@ -185,11 +230,11 @@ namespace Geeks
             {
                 if (arr[j] <= pivot)
                 {
-                    Swap(ref arr[i], ref arr[j]);
+                    Misc.Swap(ref arr[i], ref arr[j]);
                     i++;
                 }
             }
-            Swap(ref arr[i], ref arr[hi]);
+            Misc.Swap(ref arr[i], ref arr[hi]);
             return i;
         }
 
@@ -205,7 +250,7 @@ namespace Geeks
                 buckets[bIndex].Add(arr[i]);
             }
             int j = 0;
-            foreach(var bucket in buckets)
+            foreach (var bucket in buckets)
             {
                 var bArray = bucket.ToArray();
                 //BucketSort(bArray); Cannot do bucketsort itself since it will cause recursion overflow. For eg. the first bucket will
@@ -239,7 +284,7 @@ namespace Geeks
         public static void FindMinimumLengthToSort(int[] arr)
         {
             int s, e, i;
-            int n= arr.Length;
+            int n = arr.Length;
 
             // a) Scan from left to right and find the first element which is greater than the next element.
             for (s = 0; s < n - 1; s++)
@@ -252,9 +297,9 @@ namespace Geeks
 
             // Scan from right to left and find the first element (first in right to left order) 
             // which is smaller than the next element (next in right to left order)
-            for(e=n-1; e> 0; e--)
+            for (e = n - 1; e > 0; e--)
             {
-                if (arr[e] < arr[e-1])
+                if (arr[e] < arr[e - 1])
                     break;
             }
 
@@ -279,15 +324,34 @@ namespace Geeks
             }
 
             // Find the last element (if there is any) in arr[e+1..n-1] which is smaller than max, change e to index of this element
-            for (i=n-1; i> e; i--)
+            for (i = n - 1; i > e; i--)
             {
-                if (arr[i]< max)
+                if (arr[i] < max)
                 {
                     e = i;
                     break;
                 }
             }
             Console.WriteLine("Minimum index is {0} and {1}", s, e);
+        }
+
+        // InsertionSort  O(n*k)
+        // Heap Sort O(k) + O((n-k)*logK)
+        // Create a Min Heap of size k+1 with first k+1 elements. This will take O(k) time
+        // One by one remove min element from heap, put it in result array, and add a new element to heap from remaining elements.
+        public static void SortNearlySorted(int[] arr, int n, int k)
+        {
+            var minHeap = new MinHeap(k + 1); // or create a temp arr with k elements and use in constructor
+            for (int i = 0; i <= k; i++)
+                minHeap.insert(arr[i]);
+
+            for (int i = k + 1, r = 0; r < n; r++, i++)
+            {
+                if (i < n)
+                    arr[r] = minHeap.ReplaceMin(arr[i]);
+                else
+                    arr[r] = minHeap.ExtractMin();
+            }
         }
     }
 }

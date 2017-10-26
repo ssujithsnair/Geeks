@@ -8,6 +8,14 @@ namespace Geeks
 {
     static class Misc
     {
+        public static void Swap(ref int x, ref int y)
+        {
+            if (x == y) // MUST since x/y points to address
+                return;
+            x = x + y;
+            y = x - y;
+            x = x - y;
+        }
         /*
          * To find lattice points, we basically need to find values of (x, y) which satisfy the equation x2 + y2 = r2.
          * For any value of (x, y) that satisfies the above equation we actually have total 4 different combination which
@@ -35,6 +43,22 @@ namespace Geeks
                     p += 4;
             }
             return p;
+        }
+
+        public static void TestMinHeap()
+        {
+            MinHeap h = new MinHeap(11);
+            h.insert(3);
+            h.insert(2);
+            h.Delete(1);
+            h.insert(15);
+            h.insert(5);
+            h.insert(4);
+            h.insert(45);
+            Console.WriteLine("extracte Min = " + h.ExtractMin());
+            Console.WriteLine("Min = " + h.GetMin());
+            h.Decrease(2, 1);
+            Console.WriteLine("Min = " + h.GetMin());
         }
         
     }

@@ -53,6 +53,77 @@ namespace Geeks
             }
             Head = Sorted;
         }
+        private Node MergeNodes(Node left, Node right)
+        {
+            if (left == null)
+                return right;
+            if (right == null)
+                return left;
+
+            Node result = null;
+            if (left.value <= right.value)
+            {
+                result = left;
+                result.next = MergeNodes(left.next, right);
+            }
+            else
+            {
+                result = right;
+                result.next = MergeNodes(left, right.next);
+            }
+            return result;
+        }
+
+        private Node GetMiddle(Node head)
+        {
+            if (head == null)
+                return head;
+
+            var slow = head;
+            var fast = head.next;
+
+            // Move fastptr by two and slow ptr by one
+            // Finally slowptr will point to middle node
+            while (fast != null)
+            {
+                fast = fast.next;
+                if (fast != null)
+                {
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+            }
+            return slow;
+        }
+
+        public void MergeSort()
+        {
+            Head = MergeSort(Head);
+        }
+
+        private Node MergeSort(Node head)
+        {
+            if (head == null || head.next == null)
+                return head;
+
+            // get the middle of the list
+            Node mid = GetMiddle(head);
+            Node midN = mid.next;
+
+            // set the next of middle node to null
+            mid.next = null;
+            
+            // Apply mergeSort on left list
+            var left = MergeSort(head);
+            
+            // Apply mergeSort on right list
+            var right = MergeSort(midN);
+
+            // Apply mergeSort on right list
+            var mergedNodes = MergeNodes(left, right);
+            return mergedNodes;
+        }
+
         public void printlist()
         {
             var head = Head;

@@ -49,6 +49,7 @@ namespace Geeks
         static void MiscP()
         {
             int val = Misc.LatticePoints(5);
+            Misc.TestMinHeap();
         }
         static void SortP()
         {
@@ -66,6 +67,7 @@ namespace Geeks
             Sort.BucketSort(arr);
             arr = new int[] { 10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60 };
             Sort.FindMinimumLengthToSort(arr);
+            Sort.MergeSortSingleLinkedList();
         }
         static void Main(string[] args)
         {
