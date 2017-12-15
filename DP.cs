@@ -119,6 +119,7 @@ namespace Geeks
             }
             return b;
         }
+
         private static int min (int x, int y, int z)
         {
             return Math.Min(x, Math.Min(y, z));
@@ -199,7 +200,7 @@ namespace Geeks
         private static int CostPathRecur(int[,] Cost, int m, int n)
         {
             if (m < 0 || n < 0)
-                return 1000; // High value is key. should be max_int. it avoids taking -ve paths
+                return int.MaxValue; // High value is key. should be max_int. it avoids taking -ve paths
             if (m == 0 && n == 0)
                 return Cost[m, n];
             return Cost[m, n] + min(CostPathRecur(Cost, m - 1, n - 1),
@@ -357,6 +358,21 @@ namespace Geeks
                 }
 
             return trials[n, k];
+        }
+        public static int TilingProblemNByM(int n, int m)
+        {
+            int[] count = new int[n + 1];
+            count[0] = 0;
+            for (int i = 1; i <= n; i++)
+            {
+                if (i > m)
+                    count[i] = count[i - 1] + count[i - m];
+                else if (i < m)
+                    count[i] = 1;
+                else
+                    count[i] = 2;
+            }
+            return count[n];
         }
 
     }

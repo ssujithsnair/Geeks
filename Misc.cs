@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace Geeks
 {
+    public class ReverseComparer<T> : IComparer<T>
+    {
+        public int Compare(T x, T y)
+        {
+            return Comparer<T>.Default.Compare(y, x);
+        }
+    }
+
     static class Misc
     {
         public static void Swap(ref int x, ref int y)

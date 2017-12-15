@@ -3,6 +3,11 @@ using Marshal = System.Runtime.InteropServices.Marshal;
 
 namespace Geeks.Bit
 {
+    /*
+     * (n & (n-1)) - unset the righmost set bit
+     * ((1 << n) - 1) - Sets one bit in n lsb bits
+     * n & (-n) - Sets only the rightmost bit
+     */
     public static class Bitwise
     {
         static int INT_SIZE = 32;

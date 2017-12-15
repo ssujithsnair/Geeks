@@ -54,8 +54,9 @@ namespace Geeks
         static void SortP()
         {
             int[] arr = { 64, 25, 12, 22, 11 };
-            Sort.SelectionSort(arr);//
-            Sort.MergeSort(arr, 0, arr.Length - 1);
+            //Sort.SelectionSort(arr);//
+            //Sort.MergeSort(arr, 0, arr.Length - 1);
+            Sort.MergeSort(arr);
             Sort.InsertionSortSingleLinkedList();
             //arr = new int[] {10, 7, 8, 9, 1, 5};
             arr = new int[]{ 64, 25, 12, 22, 11 };
@@ -74,8 +75,12 @@ namespace Geeks
             //Bit();
             //DyP();
             //SearchP();
-            SortP();
+           // SortP();
             //MiscP();
+            //TrieWithDict.Test();
+            //var v = DP.TilingProblemNByM(7, 4);
+            //BinaryTree.Test();
+            WeightedGraph.Test();
         }
     }
 }

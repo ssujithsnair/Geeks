@@ -79,6 +79,52 @@ namespace Geeks
             }
         }
 
+        public static void MergeSort(int[] arr)
+        {
+            int[] temp = new int[arr.Length];
+            Array.ForEach(arr, a => Console.WriteLine(a));
+            MergeSort(arr, temp,  0, arr.Length - 1);
+            Array.ForEach(arr, a => Console.WriteLine(a));
+        }
+
+        private static void MergeSort(int[] arr, int[] temp, int lo, int hi)
+        {
+            if (lo >= hi)
+                return;
+            int mid = (lo + hi) / 2;
+            MergeSort(arr, temp, lo, mid);    // merge left
+            MergeSort(arr,temp,  mid + 1, hi);    // merge right
+            // Merge both arrays
+            Merge(arr, temp, lo, mid, hi);
+        }
+
+        private static void Merge(int[] arr, int[] temp, int lo, int mid, int hi)
+        {
+            for (int i = lo; i <= hi; i++)
+                temp[i] = arr[i];
+            int left = lo, right = mid + 1, current = lo;
+            while (left <= mid && right <= hi)
+            {
+                arr[current++] = temp[left] <= temp[right] ? temp[left++] : temp[right++];
+            }
+            while (left <= mid)
+                arr[current++] = temp[left++];
+        }
+
+        //Time complexity of Merge Sort is \Theta(nLogn) in all 3 cases (worst, average and best) as merge sort always divides
+        // the array in two halves and take linear time to merge two halves.
+        // Auxiliary Space: O(n)
+        //http://www.geeksforgeeks.org/merge-sort/ CHECK IT
+        public static void MergeSort(int[] arr, int lo, int hi)
+        {
+            if (lo >= hi)
+                return;
+            int med = lo + (hi - lo) / 2;
+            MergeSort(arr, lo, med);
+            MergeSort(arr, med + 1, hi);
+            Merge(arr, lo, med, hi);
+        }
+
         private static void Merge(int[] arr, int lo, int med, int hi)
         {
             int n1 = med - lo + 1;
@@ -117,21 +163,6 @@ namespace Geeks
                 j++; k++;
             }
         }
-
-        //Time complexity of Merge Sort is \Theta(nLogn) in all 3 cases (worst, average and best) as merge sort always divides
-        // the array in two halves and take linear time to merge two halves.
-        // Auxiliary Space: O(n)
-        //http://www.geeksforgeeks.org/merge-sort/ CHECK IT
-        public static void MergeSort(int[] arr, int lo, int hi)
-        {
-            if (lo >= hi)
-                return;
-            int med = lo + (hi - lo) / 2;
-            MergeSort(arr, lo, med);
-            MergeSort(arr, med + 1, hi);
-            Merge(arr, lo, med, hi);
-        }
-
         public static void InsertionSortSingleLinkedList()
         {
             var list = GetLinkedList();
@@ -252,10 +283,11 @@ namespace Geeks
             int j = 0;
             foreach (var bucket in buckets)
             {
+                //bucket.Sort();
                 var bArray = bucket.ToArray();
                 //BucketSort(bArray); Cannot do bucketsort itself since it will cause recursion overflow. For eg. the first bucket will
                 // keep coming back to the first bucket of recursion call 
-                InsertionSort(bucket.ToArray());
+                InsertionSort(bArray);
                 foreach (var val in bArray)
                     arr[j++] = val;
             }

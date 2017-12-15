@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Bitwise.cs" />
     <Compile Include="DP.cs" />
+    <Compile Include="Graph.cs" />
     <Compile Include="LinkedList.cs" />
     <Compile Include="MinHeap.cs" />
     <Compile Include="Misc.cs" />
@@ -52,6 +53,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Search.cs" />
     <Compile Include="Sort.cs" />
+    <Compile Include="Tree.cs" />
+    <Compile Include="Trie.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
