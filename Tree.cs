@@ -149,6 +149,25 @@ namespace Geeks
         {
             Stack<Node> s = new Stack<Node>();
             Node current = Root;
+            while (s.Count > 0 || current != null)
+            {
+                if (current != null)
+                {
+                    s.Push(current);
+                    current = current.left;
+                }
+                else
+                {
+                    Node node = s.Pop();
+                    Console.WriteLine(node.data);
+                    current = node.right;
+                }
+            }
+        }
+        public void InOrderNoRecursion()
+        {
+            Stack<Node> s = new Stack<Node>();
+            Node current = Root;
             while (current != null)
             {
                 s.Push(current);

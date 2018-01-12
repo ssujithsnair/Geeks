@@ -158,11 +158,64 @@ namespace Geeks
             public bool IsEndOfNode = false;
             public string PhoneNumber;
             public Dictionary<char, TrieNode> Children = new Dictionary<char,TrieNode>();
+            public List<string> StartsWith = new List<string>();
+        }
+        public TrieWithDict() { }
+        #region WordSquare
+        public TrieWithDict(String[] words) {
+            foreach(string w in words) {
+                Insert(w, null, true);
+            }
         }
 
-        bool Insert(string key, string phone=null)
+        private List<String> findByPrefix(String prefix) {
+            List<String> ans = new List<string>();
+            var node = GetNode(prefix);
+            if (node == null)
+                return ans;
+            ans.AddRange(node.StartsWith);
+            return ans;
+        }
+
+        public List<List<String>> wordSquares(String[] words)
         {
-            key = key.ToLower();
+            List<List<String>> ans = new List<List<string>>();
+            if (words == null || words.Length == 0)
+                return ans;
+            int len = words[0].Length;
+            TrieWithDict trie = new TrieWithDict(words);
+            List<String> ansBuilder = new List<string>();
+            foreach (String w in words)
+            {
+                ansBuilder.Add(w);
+                search(len, ans, ansBuilder);
+                ansBuilder.RemoveAt(ansBuilder.Count - 1);
+            }
+            return ans;
+        }
+
+        private void search(int len, List<List<String>> ans,
+                List<String> ansBuilder) {
+        if (ansBuilder.Count == len) {
+            ans.Add(new List<string>(ansBuilder));
+            return;
+        }
+
+        int idx = ansBuilder.Count;
+        StringBuilder prefixBuilder = new StringBuilder();
+        foreach(String s in ansBuilder)
+            prefixBuilder.Append(s[idx]);
+        List<String> startWith = findByPrefix(prefixBuilder.ToString());
+        foreach (String sw in startWith) {
+            ansBuilder.Add(sw);
+            search(len, ans, ansBuilder);
+            ansBuilder.RemoveAt(ansBuilder.Count - 1);
+        }
+    }
+        #endregion
+        bool Insert(string key, string phone=null, bool starts=false)
+        {
+            //key = key.ToLower();
             TrieNode next = root;
             foreach (var c in key)
             {
@@ -171,6 +224,7 @@ namespace Geeks
                     next.Children.Add(c, node = new TrieNode());
                 else
                     node = next.Children[c];
+                node.StartsWith.Add(key);
                 next = node;
             }
             next.IsEndOfNode = true;
@@ -190,12 +244,31 @@ namespace Geeks
             }
             return next;
         }
-
+        void WordBreak(string str, string[] dict)
+        {
+            WordBreak(str, dict, "");
+        }
+        void WordBreak(string str, string[] dict, string result)
+        {
+            for (int i = 1; i <= str.Length; i++)
+            {
+                string prefix = str.Substring(0, i);
+                if (dict.Contains(prefix))
+                {
+                    if (i == str.Length)
+                    {
+                        Console.WriteLine(result + prefix);
+                        return;
+                    }
+                    WordBreak(str.Substring(i, str.Length - i), dict, result + prefix + " ");
+                }
+            }
+        }
         // Learn word break printing solution
         bool WordBreak(string split)
         {
             int n = split.Length;
-            bool[] match = new bool[n];
+            bool[] match = new bool[n+1];
             match[0] = true;
             for (int i = 0; i < n; i++)
             {
@@ -214,7 +287,20 @@ namespace Geeks
                     }
                 }
             }
-            return match[n];
+            if (!match[n])
+                return false;
+            string str = string.Empty;
+            bool started = false;
+            for (int i = 1; i < n; i++)
+            {
+                str += split[i-1];
+                if (match[i] && !match[i + 1])
+                {
+                    Console.WriteLine(str);
+                    str = string.Empty;
+                }
+            }
+            return true;
         }
 
         public Dictionary<string, string> GetMatchingPeople(string namePrefix)
@@ -253,10 +339,96 @@ namespace Geeks
             return node != null && node.IsEndOfNode ? node.PhoneNumber : null;
         }
 
+        int m, n;
+        private bool IsValidNeighbor(int i, int j, bool[,] marked)
+        {
+            return ( i>=0 && j >=0&& i < m && j < n && !marked[i,j]);
+        }
+
+        private void SearchBoggle(TrieNode trie, bool[,] marked, char[,] boggle, int i, int j, string prefix)
+        {
+            if (trie.IsEndOfNode)
+                Console.WriteLine(prefix);
+            
+            marked[i, j] = true;
+
+            foreach (char c in trie.Children.Keys)
+            {
+                TrieNode next = trie.Children[c];
+                ///var neighbors = GetNeighbors(i, j);
+                foreach (var neighbor in GetNeighborsY(i,j))
+                {
+                    int a = neighbor.Item1;
+                    int b = neighbor.Item2;
+                    if (IsValidNeighbor(a, b, marked) && boggle[a, b] == c)
+                        SearchBoggle(next, marked, boggle, a, b, prefix + c);
+                }
+            }
+            marked[i, j] = false;
+        }
+
+        private static IEnumerable<Tuple<int, int>> GetNeighborsY(int i, int j)
+        {
+            yield return new Tuple<int, int> (i, j+1);
+            yield return new Tuple<int, int> (i, j-1);
+            yield return new Tuple<int, int> (i+1, j);
+            yield return new Tuple<int, int> (i-1, j);
+            yield return new Tuple<int, int> (i+1, j+1);
+            yield return new Tuple<int, int> (i+1, j-1);
+            yield return new Tuple<int, int> (i-1, j+1);
+            yield return new Tuple<int, int>(i - 1, j - 1);
+        }
+
+        private static List<Tuple<int, int>> GetNeighbors(int i, int j)
+        {
+            return new List<Tuple<int, int>>() { 
+                new Tuple<int, int> (i, j+1),
+                new Tuple<int, int> (i, j-1),
+                new Tuple<int, int> (i+1, j),
+                new Tuple<int, int> (i-1, j),
+                new Tuple<int, int> (i+1, j+1),
+                new Tuple<int, int> (i+1, j-1),
+                new Tuple<int, int> (i-1, j+1),
+                new Tuple<int, int> (i-1, j-1),
+            };
+        }
+
+        private void FindWords(char[,] boggle)
+        {
+            m = boggle.GetLength(0);
+            n= boggle.GetLength(1);
+            bool[,] marked = new bool[m, n];
+            for(int i=0; i< m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (root.Children.ContainsKey(boggle[i, j]))
+                    {
+                        SearchBoggle(root.Children[boggle[i, j]], marked, boggle, i, j, boggle[i,j].ToString());
+                    }
+                }
+            }
+        }
+
         public static void Test()
         {
-            TestPrefixMatch();
-            PhoneBookTest();
+            WordSquareTest();
+            //TestPrefixMatch();
+            //PhoneBookTest();
+            //BoggleTest();
+            //WordBreakTest();
+        }
+
+        private static void WordBreakTest()
+        {
+            string[] keys = {"the", "a", "there", "answer", "any",
+                         "by", "bye", "their"};
+            var trie = new TrieWithDict();
+            foreach (var key in keys)
+            {
+                trie.Insert(key);
+            }
+            trie.WordBreak("abyetheir", keys);
         }
 
         public static void TestPrefixMatch()
@@ -273,6 +445,12 @@ namespace Geeks
             b = trie.Search("answe");
         }
 
+        private static void WordSquareTest()
+        {
+            var words = new string[] { "area", "lead", "wall", "lady", "ball" };
+            TrieWithDict trie = new TrieWithDict(words);
+            var squares = trie.wordSquares(words);
+        }
         private static void PhoneBookTest()
         {
             var trie = new TrieWithDict();
@@ -286,6 +464,25 @@ namespace Geeks
             trie.Insert("ZenLoser", "201-222-1117");
             trie.Insert("SujithTheMan", "201-222-1118");
             var people = trie.GetMatchingPeople("n");
+        }
+        private static void BoggleTest()
+        {
+            string[] dictionary = {"GEEKS", "FOR", "QUIZ", "GEE"};
+      
+            // root Node of trie
+            TrieWithDict trie = new TrieWithDict();
+      
+            // insert all words of dictionary into trie
+            int n = dictionary.Length;
+            foreach(var str in dictionary)
+                trie.Insert(str);
+      
+            char [,]boggle = {{'G','I','Z'},
+                               {'U','E','K'},
+                               {'Q','S','E'}
+            };
+            trie.FindWords(boggle);     
+        
         }
     }
 }

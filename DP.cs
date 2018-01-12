@@ -374,6 +374,59 @@ namespace Geeks
             }
             return count[n];
         }
+        public static void LCSubstr()
+        {
+            int r = LCStr("GeeksForGeeksg", "Geeksg");
+            r = LCMirror(new int[] { 7, 7, 7, 5, 6, 7, 7 }); // 3
+            r = LCMirror(new int[] { 7, 7, 7, 7, 6, 7, 7 }); // 5
+            r = LCMirror(new int[] { }); // 0
+            r = LCMirror(new int[] { 1 }); // 1
+            r = LCMirror(new int[] { 1, 1 }); // 2
+            r = LCMirror(new int[] { 1, 1, 1 }); // 3
+            r = LCMirror(new int[] { 1, 2, 3, 2, 1 }); // 5
+            r = LCMirror(new int[] { 1, 2, 3, 8, 9, 3, 2, 1 }); // 3
+            r = LCMirror(new int[] { 1, 2, 1, 4 }); // 3
+            r = LCMirror(new int[] { 7, 1, 2, 9, 7, 2, 1 }); // 2
+        }
+        private static int LCStr(string n, string m)
+        {
+            int result = 0;
+            int[,] lcs = new int[n.Length + 1, m.Length + 1];
+            for(int i=0; i<= n.Length; i++)
+                for (int j = 0; j <= m.Length; j++)
+                {
+                    if (i == 0 || j == 0)
+                        lcs[i, j] = 0;
+                    else if (n[i - 1] == m[j - 1])
+                    {
+                        lcs[i, j] = 1 + lcs[i - 1, j - 1];
+                        result = Math.Max(result, lcs[i, j]);
+                    }
+                    else
+                        lcs[i, j] = 0;
+                }
+            return result;
+        }
 
+        private static int LCMirror(int[] arr)
+        {
+            int result = 0;
+            int n = arr.Length;
+            int[,] lcs = new int[n+1,n+1];
+            for (int i = 0; i <= n; i++)
+                for (int j = 0; j <= n; j++)
+                {
+                    if (i == 0 || j == 0)
+                        lcs[i, j] = 0;
+                    else if (arr[i - 1] == arr[n-j])
+                    {
+                        lcs[i, j] = 1 + lcs[i - 1, j - 1];
+                        result = Math.Max(result, lcs[i, j]);
+                    }
+                    else
+                        lcs[i, j] = 0;
+                }
+            return result;
+        }
     }
 }

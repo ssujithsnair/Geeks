@@ -24,6 +24,45 @@ namespace Geeks
             y = x - y;
             x = x - y;
         }
+
+        //https://leetcode.com/problems/trapping-rain-water/solution/
+        /*Initialize left pointer to 0 and right pointer to size-1
+        While < left<right, do:
+            If height[left] is smaller than height[right]
+                If height[left]>=left_maxheight[left]>=left_max, update left_maxleft_max
+                Else add left_max−height[left]left_max−height[left] to ans
+                Add 1 to left.
+            Else
+                If height[right]>=right_maxheight[right]>=right_max, update right_maxright_max
+                Else add right_max−height[right]right_max−height[right] to ans
+                Subtract 1 from right.
+         * */
+        public static void RainWater()
+        {
+            int[] arr = new int[] { 1, 3, 2, 4, 1, 3, 1, 4, 5, 2, 2, 1, 4, 2, 2 };
+            int left = 0, right = arr.Length-1, result = 0, leftmax = 0, rightmax = 0;
+            while (left < right)
+            {
+                if (arr[left] < arr[right])
+                {
+                    if (arr[left] >= leftmax)
+                        leftmax = arr[left];
+                    else
+                        result += leftmax - arr[left];
+                    left++;
+                }
+                else
+                {
+                    if (arr[right] >= rightmax)
+                        rightmax = arr[right];
+                    else
+                        result += rightmax - arr[right];
+                    right--;
+                }
+            }
+
+        }
+
         /*
          * To find lattice points, we basically need to find values of (x, y) which satisfy the equation x2 + y2 = r2.
          * For any value of (x, y) that satisfies the above equation we actually have total 4 different combination which

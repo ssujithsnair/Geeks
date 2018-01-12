@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackTrack.cs" />
     <Compile Include="Bitwise.cs" />
     <Compile Include="DP.cs" />
     <Compile Include="Graph.cs" />
